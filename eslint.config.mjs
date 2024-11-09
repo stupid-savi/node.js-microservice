@@ -1,21 +1,28 @@
 // @ts-check
-
+import globals from "globals";
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
-
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: {
+        // ...globals.browser,
+        ...globals.node,
+        myCustomGlobal: "readonly"
+      },
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
-      globals: {
-        process: true,
-        console: true, // Add this to recognize process as a global
-      },
+
+      // globals: {
+      //   process: true,
+      //   console: true, // Add this to recognize process as a global
+      // },
     },
   },
 
@@ -38,7 +45,7 @@ export default tseslint.config(
       'no-var': 'error', // Disallow the use of var; prefer let/const
       'no-mixed-spaces-and-tabs': 'error', // Disallow mixed spaces and tabs for indentation
       'no-else-return': 'error',
-      'arrow-body-style': ['error', 'always'], // let foo = () => 0; ❌ let foo = () => {} ✅
+      'arrow-body-style': ['off', 'always'], // let foo = () => 0; ❌ let foo = () => {} ✅
     },
   },
 )
