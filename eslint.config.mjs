@@ -14,13 +14,13 @@ export default tseslint.config(
       },
       globals: {
         process: true,
-        console: true // Add this to recognize process as a global
+        console: true, // Add this to recognize process as a global
       },
     },
   },
 
   {
-    ignores: ['dist', 'node-modules', 'eslint.config.mjs',],
+    ignores: ['dist', 'node-modules', 'eslint.config.mjs'],
   },
 
   {
@@ -41,5 +41,4 @@ export default tseslint.config(
       'arrow-body-style': ['error', 'always'], // let foo = () => 0; ❌ let foo = () => {} ✅
     },
   },
-
 )
