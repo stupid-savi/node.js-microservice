@@ -12,6 +12,10 @@ export default tseslint.config(
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
+      globals: {
+        process: true,
+        console: true // Add this to recognize process as a global
+      },
     },
   },
 
@@ -21,7 +25,7 @@ export default tseslint.config(
 
   {
     rules: {
-      'no-console': 'warn', // Warn about console statements
+      'no-console': 'off', // Warn about console statements
       'no-unused-vars': 'warn', // Warn about unused variables
       'no-undef': 'error', // Error if an undeclared variable is used
       eqeqeq: ['error', 'always'], // Enforce strict equality (=== and !==)
@@ -37,4 +41,5 @@ export default tseslint.config(
       'arrow-body-style': ['error', 'always'], // let foo = () => 0; ❌ let foo = () => {} ✅
     },
   },
+
 )
