@@ -1,5 +1,5 @@
 // @ts-check
-import globals from "globals";
+import globals from 'globals'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 export default tseslint.config(
@@ -8,11 +8,11 @@ export default tseslint.config(
   {
     languageOptions: {
       ecmaVersion: 2022,
-      sourceType: "module",
+      sourceType: 'module',
       globals: {
         // ...globals.browser,
         ...globals.node,
-        myCustomGlobal: "readonly"
+        myCustomGlobal: 'readonly',
       },
       parserOptions: {
         projectService: true,
