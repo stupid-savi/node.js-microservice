@@ -7,12 +7,11 @@ export default tseslint.config(
   ...tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: 'module',
       globals: {
         // ...globals.browser,
         ...globals.node,
-        myCustomGlobal: 'readonly',
+        "NodeJS": true
+
       },
       parserOptions: {
         projectService: true,
@@ -23,6 +22,7 @@ export default tseslint.config(
       //   process: true,
       //   console: true, // Add this to recognize process as a global
       // },
+
     },
   },
 
