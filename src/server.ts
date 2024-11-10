@@ -1,6 +1,7 @@
 import app from './app'
 import { CONFIG } from './config'
 import { Server } from 'http'
+import logger from './config/logger'
 let server: Server | null = null
 export let HEALTH_CHECK_ENABLED = true
 let timerId: NodeJS.Timeout | null
@@ -9,7 +10,7 @@ const gracefulShutdownTime = parseInt(CONFIG.SHUTDOWN_WINDOW_TIMEFRAME || '15')
 const startServer = () => {
   try {
     server = app.listen(CONFIG.PORT, () => {
-      console.log(`Server is running at port ${CONFIG.PORT}`)
+      logger.info('Server is listening at', { port: CONFIG.PORT })
     })
   } catch (err) {
     console.error(err)

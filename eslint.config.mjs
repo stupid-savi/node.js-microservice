@@ -10,8 +10,7 @@ export default tseslint.config(
       globals: {
         // ...globals.browser,
         ...globals.node,
-        "NodeJS": true
-
+        NodeJS: true,
       },
       parserOptions: {
         projectService: true,
@@ -22,7 +21,6 @@ export default tseslint.config(
       //   process: true,
       //   console: true, // Add this to recognize process as a global
       // },
-
     },
   },
 
