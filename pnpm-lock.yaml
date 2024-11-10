@@ -17,6 +17,9 @@ importers:
       globals:
         specifier: ^15.12.0
         version: 15.12.0
+      http-errors:
+        specifier: ^2.0.0
+        version: 2.0.0
       winston:
         specifier: ^3.17.0
         version: 3.17.0
@@ -30,6 +33,9 @@ importers:
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
+      '@types/http-errors':
+        specifier: ^2.0.4
+        version: 2.0.4
       '@types/node':
         specifier: ^22.9.0
         version: 22.9.0

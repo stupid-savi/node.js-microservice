@@ -23,7 +23,7 @@ const logger = winston.createLogger({
     }),
     new winston.transports.File({
       level: 'info',
-      dirname: './info',
+      dirname: './logs',
       filename: 'info.log',
       format,
       silent: ['dev', 'test'].includes(CONFIG.NODE_ENV || ''),
