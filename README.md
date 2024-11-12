@@ -7,3 +7,5 @@ Git Hooks :- Husky and lint-staged :- `https://typicode.github.io/husky/get-star
 **Husky allows us to register git hooks so we can automate linting and prettier commands for git actions like commit, push etc. and lint-staged only apply linting and formatting to changed files not the entire folder or files **
 <br />
 logger :- winston
+
+For jest testing - `pnpm add --save-dev jest, pnpm add --save-dev ts-jest, npx ts-jest config init, pnpm add --save-dev @types/jest, pnpm add --save-dev supertest @types/supertest `

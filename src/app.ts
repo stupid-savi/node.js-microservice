@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 // Note :- If we throw any error in our any api route or function it get catched in the global error hanlder middleware. But in express below version 5 (fixed in version 5) if we throw error in a async function it won't get caught in the global error hanlder middle and app crashed so instead of throw use next(pass err here)
 
 app.get('/', (_, res) => {
-  const isLoggedIn = false
+  const isLoggedIn = true
   if (!isLoggedIn) {
     const err = createHttpError(401, 'You are not authorised to access this')
     throw err
