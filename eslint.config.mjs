@@ -44,7 +44,7 @@ export default tseslint.config(
       'no-mixed-spaces-and-tabs': 'error', // Disallow mixed spaces and tabs for indentation
       'no-else-return': 'error',
       'arrow-body-style': ['off', 'always'], // let foo = () => 0; ❌ let foo = () => {} ✅
-      '@typescript-eslint/no-misused-promises': "off"
+      '@typescript-eslint/no-misused-promises': 'off',
     },
   },
 )
