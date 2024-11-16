@@ -3,8 +3,11 @@ import { HEALTH_CHECK_ENABLED } from './server'
 
 import createHttpError, { HttpError } from 'http-errors'
 import logger from './config/logger'
+import authRouter from './routes/auth'
 
 const app = express()
+
+app.use(express.json())
 
 app.use((req, res, next) => {
   console.log('middleware triggered')
@@ -15,6 +18,9 @@ app.use((req, res, next) => {
     return
   }
 })
+
+// prefix route with auth
+app.use('/auth', authRouter)
 
 // Note :- If we throw any error in our any api route or function it get catched in the global error hanlder middleware. But in express below version 5 (fixed in version 5) if we throw error in a async function it won't get caught in the global error hanlder middle and app crashed so instead of throw use next(pass err here)
 

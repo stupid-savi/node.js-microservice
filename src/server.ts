@@ -44,7 +44,9 @@ const clearTimeoutEvent = () => {
   }
 }
 
-startServer()
+if (require.main === module) {
+  startServer()
+}
 
 process.on('SIGINT', shutdownGracefully)
 process.on('SIGTERM', shutdownGracefully)

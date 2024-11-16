@@ -106,5 +106,8 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
-  }
+  },
+  "include": ["src/**/*"], // Only include the 'src' directory,
+
+  "exclude": ["test", "node_modules"] // Here it is not needed because above we have root director which src
 }

@@ -25,7 +25,7 @@ export default tseslint.config(
   },
 
   {
-    ignores: ['dist', 'node-modules', 'eslint.config.mjs', 'jest.config.js'],
+    ignores: ['dist', 'tests', 'node-modules', 'eslint.config.mjs', 'jest.config.js'],
   },
 
   {
