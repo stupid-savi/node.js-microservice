@@ -4,6 +4,7 @@ import { HEALTH_CHECK_ENABLED } from './server'
 import createHttpError, { HttpError } from 'http-errors'
 import logger from './config/logger'
 import authRouter from './routes/auth'
+import 'reflect-metadata'
 
 const app = express()
 
