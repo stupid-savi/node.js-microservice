@@ -10,7 +10,7 @@ const gracefulShutdownTime = parseInt(CONFIG.SHUTDOWN_WINDOW_TIMEFRAME || '15')
 const startServer = () => {
   try {
     server = app.listen(CONFIG.PORT, () => {
-      logger.info('Server is listening at', { port: CONFIG.PORT })
+      logger.info('Server is listening at PORT', { port: CONFIG.PORT })
     })
   } catch (err) {
     console.error(err)
