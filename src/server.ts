@@ -24,7 +24,7 @@ const shutdownGracefully = function (signal: NodeJS.Signals) {
 
   timerId = setTimeout(() => {
     if (server) {
-      server.close((error) => {
+      server.close((error?: Error) => {
         if (error) {
           console.log('Error closing the server', error)
           process.exit(1)

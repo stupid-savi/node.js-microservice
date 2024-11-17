@@ -23,3 +23,5 @@ For jest testing - `pnpm add --save-dev jest, pnpm add --save-dev ts-jest, npx t
 ### Test Driven Development (TDD)
 
 ![alt text](assets/test-driven-development.webp)
+
+Note:- In case of testing i.e jest it automatically set the NODE_ENV = test so no need to add cross-env NODE_ENV = test in its script
