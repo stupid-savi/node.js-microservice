@@ -18,8 +18,13 @@ export class AuthController {
       res.status(400).json({ message: 'Bad Request' })
     }
 
-    await this.userService.create({ firstname, lastname, email, password })
+    const userId = await this.userService.create({
+      firstname,
+      lastname,
+      email,
+      password,
+    })
 
-    return res.status(201).json()
+    return res.status(201).json({ id: userId })
   }
 }

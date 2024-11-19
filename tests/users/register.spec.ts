@@ -4,6 +4,7 @@ import { User } from '../../src/entity/User'
 import { AppDataSource } from '../../src/config/data-source'
 import { DataSource } from 'typeorm'
 import { truncateTables } from '../utils'
+import { response } from 'express'
 
 describe('POST auth/register', () => {
   let connection: DataSource
@@ -89,6 +90,22 @@ describe('POST auth/register', () => {
       expect(user[0].firstname).toBe(userData.firstname)
       expect(user[0].lastname).toBe(userData.lastname)
       expect(user[0].email).toBe(userData.email)
+    })
+
+    it('Should return id of created user', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'jjdsjd8878',
+      }
+
+      const response = await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+
+      expect(response.body).toHaveProperty('id')
+      expect(response.body.id).toBeGreaterThan(0)
     })
   })
 
