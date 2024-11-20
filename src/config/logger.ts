@@ -35,6 +35,13 @@ const logger = winston.createLogger({
       format,
       silent: ['test'].includes(CONFIG.NODE_ENV || ''),
     }),
+    new winston.transports.File({
+      level: 'debug',
+      dirname: './logs',
+      filename: 'debug.log',
+      format,
+      silent: ['test'].includes(CONFIG.NODE_ENV || ''),
+    }),
     new winston.transports.Console({
       level: 'info',
       silent: CONFIG.NODE_ENV === 'production',
