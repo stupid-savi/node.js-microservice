@@ -17,7 +17,13 @@ const startServer = () => {
     server = null
   }
 }
-
+// AppDataSource.initialize()
+//   .then(() => {
+//     // DB connection successful
+//   })
+//   .catch((error) => {
+//     console.error('Error during Data Source initialization', error)
+//   })
 const shutdownGracefully = function (signal: NodeJS.Signals) {
   console.log(`Caught ${signal}, shutting down gracefully`)
   HEALTH_CHECK_ENABLED = false
