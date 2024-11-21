@@ -5,6 +5,7 @@ import { AppDataSource } from '../../src/config/data-source'
 import { DataSource } from 'typeorm'
 import { truncateTables } from '../utils'
 import { response } from 'express'
+import { USER_ROLES } from '../../src/constants'
 
 describe('POST auth/register', () => {
   let connection: DataSource
@@ -19,7 +20,10 @@ describe('POST auth/register', () => {
 
   beforeEach(async () => {
     // with each test truncate the db so no conflicts appears in db due other tests
-    await truncateTables(connection)
+    // await truncateTables(connection)
+    // for synchronisation
+    await connection.dropDatabase()
+    await connection.synchronize()
   })
 
   afterAll(async () => {
@@ -85,11 +89,11 @@ describe('POST auth/register', () => {
       // Assert
 
       const userRepository = connection.getRepository(User)
-      const user = await userRepository.find()
-      expect(user).toHaveLength(1)
-      expect(user[0].firstname).toBe(userData.firstname)
-      expect(user[0].lastname).toBe(userData.lastname)
-      expect(user[0].email).toBe(userData.email)
+      const users = await userRepository.find()
+      expect(users).toHaveLength(1)
+      expect(users[0].firstname).toBe(userData.firstname)
+      expect(users[0].lastname).toBe(userData.lastname)
+      expect(users[0].email).toBe(userData.email)
     })
 
     it('Should return id of created user', async () => {
@@ -106,6 +110,24 @@ describe('POST auth/register', () => {
 
       expect(response.body).toHaveProperty('id')
       expect(response.body.id).toBeGreaterThan(0)
+    })
+
+    it('Should contain role customer', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'jjdsjd8878',
+      }
+
+      await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      expect(users[0]).toHaveProperty('role')
+      expect(users[0].role).toBe(USER_ROLES.CUSTOMER)
     })
   })
 
