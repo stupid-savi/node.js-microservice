@@ -2,6 +2,7 @@ import { Repository } from 'typeorm'
 import { User } from '../entity/User'
 import { UserRequestBody } from '../types'
 import createHttpError from 'http-errors'
+import { USER_ROLES } from '../constants'
 
 export class UserService {
   constructor(
@@ -15,6 +16,7 @@ export class UserService {
         lastname,
         email,
         password,
+        role: USER_ROLES.CUSTOMER,
       })
 
       return user.id

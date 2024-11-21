@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm'
 import { User } from '../entity/User'
 import { CONFIG } from './index'
 
-const { DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD, NODE_ENV } = CONFIG
+const { DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } = CONFIG
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -12,8 +12,8 @@ export const AppDataSource = new DataSource({
   username: DB_USERNAME,
   password: DB_PASSWORD,
   database: DB_NAME,
-  // It must be false in production
-  synchronize: NODE_ENV === 'dev' || NODE_ENV === 'test',
+  // It must be false in production, Always keep it false
+  synchronize: false,
   logging: false,
   entities: [User],
   migrations: [],
