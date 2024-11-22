@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
   password: DB_PASSWORD,
   database: DB_NAME,
   // It must be false in production, Always keep it false
-  synchronize: false,
+  synchronize: true,
   logging: false,
   entities: [User],
   migrations: [],

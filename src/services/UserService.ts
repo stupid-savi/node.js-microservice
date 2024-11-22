@@ -11,6 +11,12 @@ export class UserService {
   ) {}
   async create({ firstname, lastname, email, password }: UserRequestBody) {
     try {
+      const userExist = await this.userRepository.findOne({ where: { email } })
+
+      if (userExist) {
+        throw createHttpError(400, 'Email already exists')
+      }
+
       const user = await this.userRepository.save({
         firstname,
         lastname,
@@ -22,8 +28,8 @@ export class UserService {
       return user.id
     } catch (err) {
       console.log(err)
-      const error = createHttpError(500, 'Error creating user in the Database')
-      throw error
+      // const error = createHttpError(500, 'Error creating user in the Database')
+      throw err
     }
   }
 }

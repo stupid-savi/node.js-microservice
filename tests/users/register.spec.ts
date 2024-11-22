@@ -164,6 +164,24 @@ describe('POST auth/register', () => {
         (response.headers as Record<string, string>)['content-type'],
       ).toEqual(expect.stringContaining('json'))
     })
+
+    it('Should return status 400 for duplicate email entry in db', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'a',
+        role: USER_ROLES.CUSTOMER,
+      }
+
+      const userRepository = connection.getRepository(User)
+      await userRepository.save(userData)
+      const response = await request(app).post('/auth/register').send(userData)
+      const users = await userRepository.find()
+
+      expect(response.status).toBe(400)
+      expect(users).toHaveLength(1)
+    })
   })
 
   // Sad paths are test cases when spme fields or payloads are missing which didn't make the output Okay
