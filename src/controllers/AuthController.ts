@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express'
 import { UserRequestBody } from '../types'
 import { UserService } from '../services/UserService'
 import { Logger } from 'winston'
+import bcrypt from 'bcrypt'
+import createHttpError from 'http-errors'
 
 export class AuthController {
   userService: UserService
@@ -17,24 +19,35 @@ export class AuthController {
     res: Response,
     next: NextFunction,
   ) {
-    const { firstname, lastname, email, password } = req.body
-    if (!firstname || !lastname || !email || !password) {
-      res.status(400).json({ message: 'Bad Request' })
-    }
-
-    this.logger.debug('create user request receive', {
-      firstname,
-      lastname,
-      email,
-      password: '*******',
-    })
-
     try {
+      const { firstname, lastname, email, password } = req.body
+      if (!firstname || !lastname || !email || !password) {
+        throw createHttpError(400, 'Bad Request')
+      }
+
+      if (password.length > 72) {
+        throw createHttpError(
+          400,
+          'Password cannot be greater than 72 characters',
+        )
+      }
+
+      const saltRounds = 10
+      const hashedPassword = await bcrypt.hash(password, saltRounds)
+      console.log(hashedPassword)
+
+      this.logger.debug('create user request receive', {
+        firstname,
+        lastname,
+        email,
+        password: hashedPassword,
+      })
+
       const userId = await this.userService.create({
         firstname,
         lastname,
         email,
-        password,
+        password: hashedPassword,
       })
 
       this.logger.info('user created', { id: userId })
@@ -42,7 +55,6 @@ export class AuthController {
       res.status(201).json({ id: userId })
     } catch (err) {
       next(err)
-      return
     }
   }
 }
