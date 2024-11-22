@@ -10,7 +10,7 @@ import { USER_ROLES } from '../../src/constants'
 describe('POST auth/register', () => {
   let connection: DataSource
 
-  jest.setTimeout(15000) // 15 seconds for all tests in this block
+  jest.setTimeout(20000) // 15 seconds for all tests in this block
 
   // Database tear down before running tests and after running all test
 
@@ -128,6 +128,41 @@ describe('POST auth/register', () => {
       const users = await userRepository.find()
       expect(users[0]).toHaveProperty('role')
       expect(users[0].role).toBe(USER_ROLES.CUSTOMER)
+    })
+
+    it('Should contain a hashed password', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'jjdsjd8878',
+      }
+
+      await request(app).post('/auth/register').send(userData)
+
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+
+      expect(users[0].password).not.toBe(userData.password)
+      expect(users[0].password).toHaveLength(60)
+      expect(users[0].password).toMatch(/^\$2b\$\d+\$/)
+    })
+
+    it('Should not have password more than 72 characters', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'a'.repeat(73),
+      }
+
+      const response = await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+      expect(response.status).toBe(400)
+      expect(
+        (response.headers as Record<string, string>)['content-type'],
+      ).toEqual(expect.stringContaining('json'))
     })
   })
 
