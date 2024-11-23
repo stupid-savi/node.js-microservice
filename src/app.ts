@@ -64,10 +64,14 @@ app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
   console.log(statusCode, requestPath, error.name)
 
   res.status(statusCode).json({
-    type: error.name,
-    message: error.message,
-    path: requestPath,
-    location: '',
+    errors: [
+      {
+        type: error.name,
+        message: error.message,
+        path: requestPath,
+        location: '',
+      },
+    ],
   })
 })
 

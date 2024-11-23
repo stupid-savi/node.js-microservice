@@ -1,6 +1,11 @@
-export interface UserRequestBody {
+import { Request } from 'express'
+export interface UserBodyDataType {
   firstname: string
   lastname: string
   email: string
   password: string
+}
+
+export interface UserRequestBody extends Request {
+  body: UserBodyDataType
 }
