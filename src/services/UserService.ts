@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm'
 import { User } from '../entity/User'
-import { UserRequestBody } from '../types'
-import createHttpError from 'http-errors'
+import { UserBodyDataType } from '../types'
+import createHttpError, { HttpError } from 'http-errors'
 import { USER_ROLES } from '../constants'
 
 export class UserService {
@@ -9,7 +9,7 @@ export class UserService {
     // eslint-disable-next-line no-unused-vars
     private userRepository: Repository<User>,
   ) {}
-  async create({ firstname, lastname, email, password }: UserRequestBody) {
+  async create({ firstname, lastname, email, password }: UserBodyDataType) {
     try {
       const userExist = await this.userRepository.findOne({ where: { email } })
 
@@ -27,9 +27,12 @@ export class UserService {
 
       return user.id
     } catch (err) {
-      console.log(err)
-      // const error = createHttpError(500, 'Error creating user in the Database')
-      throw err
+      const errorType = err as HttpError
+      if (errorType?.status === 400) {
+        throw err
+      }
+      const error = createHttpError(500, 'Error creating user in the Database')
+      throw error
     }
   }
 }

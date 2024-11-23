@@ -41,7 +41,7 @@ describe('POST auth/register', () => {
         firstname: 'Savi',
         lastname: 'Singh',
         email: '1@gmail.com',
-        password: 'jjdsjd8878',
+        password: 'Test@9767$%13456',
       }
 
       // Act -  Trigger the actual logic like call the api endpoint
@@ -60,7 +60,7 @@ describe('POST auth/register', () => {
         firstname: 'Savi',
         lastname: 'Singh',
         email: '1@gmail.com',
-        password: 'jjdsjd8878',
+        password: 'Test@9767$%13456',
       }
 
       const response = await request(app as any)
@@ -78,7 +78,7 @@ describe('POST auth/register', () => {
         firstname: 'Savi',
         lastname: 'Singh',
         email: '1@gmail.com',
-        password: 'jjdsjd8878',
+        password: 'Test@9767$%13456',
       }
 
       // Act
@@ -101,7 +101,7 @@ describe('POST auth/register', () => {
         firstname: 'Savi',
         lastname: 'Singh',
         email: '1@gmail.com',
-        password: 'jjdsjd8878',
+        password: 'Test@9767$%13456',
       }
 
       const response = await request(app as any)
@@ -117,7 +117,7 @@ describe('POST auth/register', () => {
         firstname: 'Savi',
         lastname: 'Singh',
         email: '1@gmail.com',
-        password: 'jjdsjd8878',
+        password: 'Test@9767$%13456',
       }
 
       await request(app as any)
@@ -135,7 +135,7 @@ describe('POST auth/register', () => {
         firstname: 'Savi',
         lastname: 'Singh',
         email: '1@gmail.com',
-        password: 'jjdsjd8878',
+        password: 'Test@9767$%13456',
       }
 
       await request(app).post('/auth/register').send(userData)
@@ -153,7 +153,7 @@ describe('POST auth/register', () => {
         firstname: 'Savi',
         lastname: 'Singh',
         email: '1@gmail.com',
-        password: 'a'.repeat(73),
+        password: 'Test@9767$%13456'.repeat(7),
       }
 
       const response = await request(app as any)
@@ -170,7 +170,7 @@ describe('POST auth/register', () => {
         firstname: 'Savi',
         lastname: 'Singh',
         email: '1@gmail.com',
-        password: 'a',
+        password: 'Test@9767$%13456',
         role: USER_ROLES.CUSTOMER,
       }
 

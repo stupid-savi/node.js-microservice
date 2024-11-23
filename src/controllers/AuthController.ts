@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Response } from 'express'
 import { UserRequestBody } from '../types'
 import { UserService } from '../services/UserService'
 import { Logger } from 'winston'
 import bcrypt from 'bcrypt'
-import createHttpError from 'http-errors'
+import { validationResult } from 'express-validator'
 
 export class AuthController {
   userService: UserService
@@ -14,22 +14,16 @@ export class AuthController {
     this.logger = logger
   }
 
-  async register(
-    req: Request<unknown, unknown, UserRequestBody>,
-    res: Response,
-    next: NextFunction,
-  ) {
+  async register(req: UserRequestBody, res: Response, next: NextFunction) {
     try {
       const { firstname, lastname, email, password } = req.body
-      if (!firstname || !lastname || !email || !password) {
-        throw createHttpError(400, 'Bad Request')
-      }
 
-      if (password.length > 72) {
-        throw createHttpError(
-          400,
-          'Password cannot be greater than 72 characters',
-        )
+      const result = validationResult(req)
+      console.log('results', result)
+
+      if (!result.isEmpty()) {
+        res.status(400).json({ errors: result.array() })
+        return
       }
 
       const saltRounds = 10
