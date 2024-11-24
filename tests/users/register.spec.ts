@@ -212,7 +212,10 @@ describe('POST auth/register', () => {
       expect(response.body.errors).toBeInstanceOf(Array)
 
       expect(response.body.errors[0]).toHaveProperty('type')
-      expect(response.body.errors[0]).toHaveProperty('msg')
+      expect(response.body.errors[0]).toHaveProperty(
+        'msg',
+        'email is required!',
+      )
       expect(response.body.errors[0]).toHaveProperty('path')
       expect(response.body.errors[0]).toHaveProperty('location')
     })
@@ -229,7 +232,10 @@ describe('POST auth/register', () => {
 
       expect(response.status).toBe(400)
       expect(response.body.errors[0]).toHaveProperty('type')
-      expect(response.body.errors[0]).toHaveProperty('msg')
+      expect(response.body.errors[0]).toHaveProperty(
+        'msg',
+        'firstname is required!',
+      )
       expect(response.body.errors[0]).toHaveProperty('path')
       expect(response.body.errors[0]).toHaveProperty('location')
     })
@@ -246,7 +252,10 @@ describe('POST auth/register', () => {
 
       expect(response.status).toBe(400)
       expect(response.body.errors[0]).toHaveProperty('type')
-      expect(response.body.errors[0]).toHaveProperty('msg')
+      expect(response.body.errors[0]).toHaveProperty(
+        'msg',
+        'lastname is required!',
+      )
       expect(response.body.errors[0]).toHaveProperty('path')
       expect(response.body.errors[0]).toHaveProperty('location')
     })
