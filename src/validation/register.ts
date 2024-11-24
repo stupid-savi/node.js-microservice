@@ -10,12 +10,12 @@ const userRegistrationSchema = checkSchema({
       errorMessage: 'firstname must be a string type',
     },
 
+    trim: true,
+
     isLength: {
       options: { min: 3, max: 50 },
       errorMessage: 'firstname should be between 3 to 50 characters',
     },
-
-    trim: true,
   },
 
   lastname: {
@@ -27,23 +27,22 @@ const userRegistrationSchema = checkSchema({
       errorMessage: 'lastname must be a string type',
     },
 
+    trim: true,
+
     isLength: {
       options: { min: 3, max: 50 },
       errorMessage: 'lastname should be between 3 to 50 characters',
     },
-
-    trim: true,
   },
 
   email: {
     notEmpty: {
       errorMessage: 'email is required!',
     },
+    trim: true,
     isEmail: {
       errorMessage: 'please enter a valid email',
     },
-
-    trim: true,
   },
 
   password: {
@@ -54,8 +53,9 @@ const userRegistrationSchema = checkSchema({
       errorMessage: 'enter a strong password',
     },
     isLength: {
-      options: { max: 72 },
-      errorMessage: 'Password cannot be greater than 72 characters',
+      options: { min: 8, max: 72 },
+      errorMessage:
+        'Password cannot be less than 8 characters and can not be greater than 72 characters',
     },
   },
 })

@@ -10,7 +10,7 @@ import { USER_ROLES } from '../../src/constants'
 describe('POST auth/register', () => {
   let connection: DataSource
 
-  jest.setTimeout(20000) // 15 seconds for all tests in this block
+  // jest.setTimeout(20000) // 15 seconds for all tests in this block
 
   // Database tear down before running tests and after running all test
 
@@ -195,6 +195,144 @@ describe('POST auth/register', () => {
       expect(
         (response.headers as Record<string, string>)['content-type'],
       ).toEqual(expect.stringContaining('json'))
+    })
+
+    it('should return status code 400 if email is missing', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        password: 'Test@9767$%13456',
+        role: USER_ROLES.CUSTOMER,
+      }
+
+      const response = await request(app).post('/auth/register').send(userData)
+
+      expect(response.status).toBe(400)
+
+      expect(response.body.errors).toBeInstanceOf(Array)
+
+      expect(response.body.errors[0]).toHaveProperty('type')
+      expect(response.body.errors[0]).toHaveProperty('msg')
+      expect(response.body.errors[0]).toHaveProperty('path')
+      expect(response.body.errors[0]).toHaveProperty('location')
+    })
+
+    it('should return status code 400 if firstname is missing', async () => {
+      const userData = {
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'Test@9767$%13456',
+        role: USER_ROLES.CUSTOMER,
+      }
+
+      const response = await request(app).post('/auth/register').send(userData)
+
+      expect(response.status).toBe(400)
+      expect(response.body.errors[0]).toHaveProperty('type')
+      expect(response.body.errors[0]).toHaveProperty('msg')
+      expect(response.body.errors[0]).toHaveProperty('path')
+      expect(response.body.errors[0]).toHaveProperty('location')
+    })
+
+    it('should return status code 400 if lastname is missing', async () => {
+      const userData = {
+        firstname: 'Savi',
+        email: '1@gmail.com',
+        password: 'Test@9767$%13456',
+        role: USER_ROLES.CUSTOMER,
+      }
+
+      const response = await request(app).post('/auth/register').send(userData)
+
+      expect(response.status).toBe(400)
+      expect(response.body.errors[0]).toHaveProperty('type')
+      expect(response.body.errors[0]).toHaveProperty('msg')
+      expect(response.body.errors[0]).toHaveProperty('path')
+      expect(response.body.errors[0]).toHaveProperty('location')
+    })
+
+    it('should return status code 400 if password is missing', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        role: USER_ROLES.CUSTOMER,
+      }
+
+      const response = await request(app).post('/auth/register').send(userData)
+
+      expect(response.status).toBe(400)
+      expect(response.body.errors[0]).toHaveProperty('type')
+      expect(response.body.errors[0]).toHaveProperty('msg')
+      expect(response.body.errors[0]).toHaveProperty('path')
+      expect(response.body.errors[0]).toHaveProperty('location')
+    })
+  })
+
+  describe('Fields are not in proper format', () => {
+    it('Should trime email field', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: ' 1@gmail.com ',
+        password: 'Test@9767$%13456',
+        role: USER_ROLES.CUSTOMER,
+      }
+
+      await request(app).post('/auth/register').send(userData)
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      const user = users[0]
+
+      expect(user.email).toBe('1@gmail.com')
+    })
+
+    it('Should trim firstname field', async () => {
+      const userData = {
+        firstname: ' Savi ',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'Test@9767$%13456',
+        role: USER_ROLES.CUSTOMER,
+      }
+
+      await request(app).post('/auth/register').send(userData)
+
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      const user = users[0]
+
+      expect(user.firstname).toBe('Savi')
+    })
+    it('Should trim lastname field', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: ' Singh ',
+        email: '1@gmail.com',
+        password: 'Test@9767$%13456',
+        role: USER_ROLES.CUSTOMER,
+      }
+
+      await request(app).post('/auth/register').send(userData)
+
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      const user = users[0]
+
+      expect(user.lastname).toBe('Singh')
+    })
+    it('Password should have atleast 8 characters', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'Test@$6',
+        role: USER_ROLES.CUSTOMER,
+      }
+
+      const response = await request(app).post('/auth/register').send(userData)
+
+      expect(response.status).toBe(400)
     })
   })
 })
