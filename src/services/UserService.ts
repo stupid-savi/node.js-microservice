@@ -5,10 +5,7 @@ import createHttpError, { HttpError } from 'http-errors'
 import { USER_ROLES } from '../constants'
 
 export class UserService {
-  constructor(
-    // eslint-disable-next-line no-unused-vars
-    private userRepository: Repository<User>,
-  ) {}
+  constructor(private userRepository: Repository<User>) {}
   async create({ firstname, lastname, email, password }: UserBodyDataType) {
     try {
       const userExist = await this.userRepository.findOne({ where: { email } })
