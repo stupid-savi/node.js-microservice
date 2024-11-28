@@ -11,7 +11,6 @@ const app = express()
 app.use(express.json())
 
 app.use((req, res, next) => {
-  console.log('middleware triggered')
   if (HEALTH_CHECK_ENABLED) {
     next()
   } else {
@@ -45,13 +44,12 @@ app.get('/long-response', async (req, res, next) => {
     next(err)
     return
   }
-  console.log('request')
   setTimeout(() => res.send('Finally! OK'), 7000)
   return
 })
 
 // Global error handling middleware for all erros like 500, 400, 401
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+ 
 app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
   const requestPath = req.path
   const statusCode = error.statusCode || 500
@@ -60,8 +58,6 @@ app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
     path: requestPath,
     type: error.name,
   })
-
-  console.log(statusCode, requestPath, error.name)
 
   res.status(statusCode).json({
     errors: [

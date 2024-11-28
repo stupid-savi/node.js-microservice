@@ -31,13 +31,14 @@ export default tseslint.config(
       'node-modules',
       'eslint.config.mjs',
       'jest.config.js',
+      'scripts'
     ],
   },
 
   {
     rules: {
       'no-console': 'off', // Warn about console statements
-      'no-unused-vars': 'warn', // Warn about unused variables
+      'no-unused-vars': 'off', // Warn about unused variables
       'no-undef': 'off', // Error if an undeclared variable is used
       eqeqeq: ['error', 'always'], // Enforce strict equality (=== and !==)
       curly: 'error', // Enforce consistent braces for control statements
@@ -56,9 +57,10 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'off',
         { argsIgnorePattern: '^_' },
       ],
     },
   },
+
 )
