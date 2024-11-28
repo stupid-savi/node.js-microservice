@@ -49,7 +49,7 @@ app.get('/long-response', async (req, res, next) => {
 })
 
 // Global error handling middleware for all erros like 500, 400, 401
- 
+
 app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
   const requestPath = req.path
   const statusCode = error.statusCode || 500
