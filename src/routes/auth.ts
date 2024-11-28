@@ -22,4 +22,11 @@ authRouter.post(
   },
 )
 
+authRouter.post(
+  '/login',
+  async (req: Request, res: Response, next: NextFunction) => {
+    await authController.login(req, res, next)
+  },
+)
+
 export default authRouter

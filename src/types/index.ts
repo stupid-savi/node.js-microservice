@@ -6,6 +6,15 @@ export interface UserBodyDataType {
   password: string
 }
 
+export interface UserLoginPayload {
+  username: string
+  password: string
+}
+
 export interface UserRequestBody extends Request {
   body: UserBodyDataType
+}
+
+export interface UserLoginRequestBody extends Request {
+  body: UserLoginPayload
 }

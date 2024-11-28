@@ -111,7 +111,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": ["src/**/*"], // Only include the 'src' directory,
+  "include": ["src/**/*"
+  ], // Only include the 'src' directory,
 
   "exclude": ["test", "node_modules"] // Here it is not needed because above we have root director which src
 }

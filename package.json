@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type" : "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon src/server.ts",
     "start": "cross-env NODE_ENV=prod ts-node src/index.ts",
@@ -13,7 +14,8 @@
     "lint:check": "eslint .",
     "test": "jest --watch --runInBand",
     "prepare": "husky",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "generate:keys" : "node scripts/generateKeys.js"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +27,7 @@
     "@types/express": "^5.0.0",
     "@types/http-errors": "^2.0.4",
     "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.9.0",
     "@types/supertest": "^6.0.2",
     "cross-env": "^7.0.3",
@@ -47,6 +50,7 @@
     "express-validator": "^7.2.0",
     "globals": "^15.12.0",
     "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.3.20",
