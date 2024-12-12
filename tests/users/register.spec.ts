@@ -107,9 +107,13 @@ describe('POST auth/register', () => {
       const response = await request(app as any)
         .post('/auth/register')
         .send(userData)
+      const isUUID =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+          response.body.id,
+        )
 
       expect(response.body).toHaveProperty('id')
-      expect(response.body.id).toBeGreaterThan(0)
+      expect(isUUID).toBe(true)
     })
 
     it('Should contain role customer', async () => {

@@ -5,18 +5,24 @@ import { Logger } from 'winston'
 import bcrypt from 'bcrypt'
 import { validationResult } from 'express-validator'
 import { JwtPayload, sign } from 'jsonwebtoken'
-import fs from 'fs/promises'
-import path from 'path'
+import { TokenService } from '../services/TokenService'
+import { AppDataSource } from '../config/data-source'
+import { User } from '../entity/User'
 import createHttpError from 'http-errors'
-import { CONFIG } from '../config'
 
 export class AuthController {
   userService: UserService
   logger: Logger
+  tokenService: TokenService
 
-  constructor(userService: UserService, logger: Logger) {
+  constructor(
+    userService: UserService,
+    logger: Logger,
+    tokenService: TokenService,
+  ) {
     this.userService = userService
     this.logger = logger
+    this.tokenService = tokenService
   }
 
   async register(req: UserRequestBody, res: Response, next: NextFunction) {
@@ -60,38 +66,36 @@ export class AuthController {
     try {
       const { username, password } = req.body
 
-      // Check if user exists and password matches :- TODO
+      const user = await this.userService.getUser(username)
 
-      let privateKey: Buffer
-
-      try {
-        privateKey = await fs.readFile(
-          path.join(__dirname, '../../certs/private.pem'),
-        )
-      } catch (err) {
-        const error = createHttpError(500, 'Error reading private key')
-        next(error)
-        return
+      if (!user) {
+        const error = createHttpError(404, `${username} user not found`)
+        throw error
       }
+
+      const isValidPassword = await bcrypt.compare(password, user.password)
+
+      if (!isValidPassword) {
+        const error = createHttpError(404, `Invalid password`)
+        throw error
+      }
+
+      // Check if user exists and password matches :- TODO
       const payload: JwtPayload = {
         sub: username,
         role: 'customer',
       }
 
-      const accessToken = sign(payload, privateKey, {
-        algorithm: 'RS256',
-        expiresIn: '1h',
-        issuer: 'auth-service',
-      })
+      const accessToken = await this.tokenService.generateAccessToken(payload)
 
-      const refreshToken = sign(
+      // persist the refresh token
+      const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30
+      const refreshTokenExpiresAt = new Date(Date.now() + MS_IN_MONTH)
+
+      const refreshToken = await this.tokenService.generateRefreshToken(
         payload,
-        CONFIG.REFRESH_TOKEN_SECRET as string,
-        {
-          algorithm: 'HS256',
-          expiresIn: '30d',
-          issuer: 'auth-service',
-        },
+        user,
+        refreshTokenExpiresAt,
       )
 
       console.log(accessToken)

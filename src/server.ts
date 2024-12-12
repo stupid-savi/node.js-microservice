@@ -2,6 +2,7 @@ import app from './app'
 import { CONFIG } from './config'
 import { Server } from 'http'
 import logger from './config/logger'
+import { AppDataSource } from './config/data-source'
 let server: Server | null = null
 export let HEALTH_CHECK_ENABLED = true
 let timerId: NodeJS.Timeout | null
@@ -17,13 +18,15 @@ const startServer = () => {
     server = null
   }
 }
+
 // AppDataSource.initialize()
 //   .then(() => {
-//     // DB connection successful
+//     console.log('Data Source has been initialized!')
 //   })
-//   .catch((error) => {
-//     console.error('Error during Data Source initialization', error)
+//   .catch((err) => {
+//     console.error('Error during Data Source initialization', err)
 //   })
+
 const shutdownGracefully = function (signal: NodeJS.Signals) {
   console.log(`Caught ${signal}, shutting down gracefully`)
   HEALTH_CHECK_ENABLED = false
