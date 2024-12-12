@@ -5,12 +5,16 @@ import { AppDataSource } from '../config/data-source'
 import { User } from '../entity/User'
 import logger from '../config/logger'
 import userRegistrationSchema from '../validation/register'
+import { TokenService } from '../services/TokenService'
+import { RefreshToken } from '../entity/RefreshToken'
 
 // Note:-  Inversify.js can automate below process
 const authRouter = express.Router()
 const userRepository = AppDataSource.getRepository(User)
+const refreshTokenRepository = AppDataSource.getRepository(RefreshToken)
 const userService = new UserService(userRepository)
-const authController = new AuthController(userService, logger)
+const tokenService = new TokenService(refreshTokenRepository)
+const authController = new AuthController(userService, logger, tokenService)
 
 // Can use any of both options for binding of this keyword
 // authRouter.post('/register', authController.register.bind(authController))

@@ -2,28 +2,25 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { User } from './User'
 
 @Entity()
-export class User {
+export class RefreshToken {
   @PrimaryGeneratedColumn('uuid')
   id: string
-  @Column()
-  firstname: string
 
-  @Column()
-  lastname: string
+  @Column({ type: 'timestamp' })
+  expireAt: Date
 
-  @Column({ unique: true })
-  email: string
-
-  @Column()
-  password: string
-
-  @Column()
-  role: string
+  @ManyToOne(() => User, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  user: User
 
   @UpdateDateColumn()
   updatedAt: Date

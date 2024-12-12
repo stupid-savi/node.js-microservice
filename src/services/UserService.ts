@@ -24,6 +24,7 @@ export class UserService {
 
       return user.id
     } catch (err) {
+      console.log(err)
       const errorType = err as HttpError
       if (errorType?.status === 400) {
         throw err
@@ -31,5 +32,12 @@ export class UserService {
       const error = createHttpError(500, 'Error creating user in the Database')
       throw error
     }
+  }
+
+  async getUser(username: string) {
+    const user = await this.userRepository.findOne({
+      where: { email: username },
+    })
+    return user
   }
 }

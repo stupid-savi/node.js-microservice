@@ -4,6 +4,7 @@ import { User } from '../../src/entity/User'
 import request from 'supertest'
 import app from '../../src/app'
 import { isJwt } from '../utils/index'
+import { RefreshToken } from '../../src/entity/RefreshToken'
 
 interface Headers {
   ['set-cookie']: string[]
@@ -30,9 +31,20 @@ describe('POST /auth/login', () => {
     it('should return access token and refresh token in cookies', async () => {
       // Arrange
       const userPayload = {
-        username: '1@gmail.com',
-        password: 'Ghtupi@7897%',
+        username: 'savi2@yopmail.com',
+        password: 'Test@988989',
       }
+
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: 'savi2@yopmail.com',
+        password: 'Test@988989',
+      }
+
+      await request(app as any)
+        .post('/auth/register')
+        .send(userData)
 
       // Act
       const response = await request(app).post('/auth/login').send(userPayload)
@@ -63,6 +75,41 @@ describe('POST /auth/login', () => {
 
       expect(isJwt(accessToken)).toBeTruthy()
       expect(isJwt(refreshToken)).toBeTruthy()
+    })
+
+    it('should persist the refresh token in the database', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'Test@9767$%13456',
+      }
+
+      await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+      // Act -  Trigger the actual logic like call the api endpoint
+
+      const userPayload = {
+        username: '1@gmail.com',
+        password: 'Test@9767$%13456',
+      }
+
+      await request(app).post('/auth/login').send(userPayload)
+
+      const refreshTokenRepository = connection.getRepository(RefreshToken)
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      const userId = users[0]?.id
+
+      const refreshTokens = await refreshTokenRepository
+        .createQueryBuilder('refreshToken')
+        .where('refreshToken.userId = :userId', {
+          userId,
+        })
+        .getMany()
+
+      expect(refreshTokens).toHaveLength(1)
     })
   })
 
