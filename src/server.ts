@@ -8,8 +8,12 @@ export let HEALTH_CHECK_ENABLED = true
 let timerId: NodeJS.Timeout | null
 const gracefulShutdownTime = parseInt(CONFIG.SHUTDOWN_WINDOW_TIMEFRAME || '15')
 
-const startServer = () => {
+const startServer = async () => {
   try {
+    if (CONFIG.NODE_ENV !== 'test') {
+      await AppDataSource.initialize()
+      logger.info('Database is connected', { port: CONFIG.DB_PORT })
+    }
     server = app.listen(CONFIG.PORT, () => {
       logger.info('Server is listening at PORT', { port: CONFIG.PORT })
     })
@@ -18,14 +22,6 @@ const startServer = () => {
     server = null
   }
 }
-
-// AppDataSource.initialize()
-//   .then(() => {
-//     console.log('Data Source has been initialized!')
-//   })
-//   .catch((err) => {
-//     console.error('Error during Data Source initialization', err)
-//   })
 
 const shutdownGracefully = function (signal: NodeJS.Signals) {
   console.log(`Caught ${signal}, shutting down gracefully`)
@@ -54,7 +50,7 @@ const clearTimeoutEvent = () => {
 }
 
 if (require.main === module) {
-  startServer()
+  void startServer()
 }
 
 process.on('SIGINT', shutdownGracefully)

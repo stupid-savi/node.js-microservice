@@ -7,6 +7,7 @@ import logger from '../config/logger'
 import userRegistrationSchema from '../validation/register'
 import { TokenService } from '../services/TokenService'
 import { RefreshToken } from '../entity/RefreshToken'
+import userLoginSchema from '../validation/login'
 
 // Note:-  Inversify.js can automate below process
 const authRouter = express.Router()
@@ -28,6 +29,7 @@ authRouter.post(
 
 authRouter.post(
   '/login',
+  userLoginSchema,
   async (req: Request, res: Response, next: NextFunction) => {
     await authController.login(req, res, next)
   },

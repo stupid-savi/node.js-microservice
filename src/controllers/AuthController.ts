@@ -66,7 +66,17 @@ export class AuthController {
     try {
       const { username, password } = req.body
 
+      const result = validationResult(req)
+
+      if (!result.isEmpty()) {
+        res.status(400).json({ errors: result.array() })
+        return
+      }
+      console.log(username, 123)
+
       const user = await this.userService.getUser(username)
+
+      console.log('1', user)
 
       if (!user) {
         const error = createHttpError(404, `${username} user not found`)
