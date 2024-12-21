@@ -9,20 +9,24 @@ import { TokenService } from '../services/TokenService'
 import { AppDataSource } from '../config/data-source'
 import { User } from '../entity/User'
 import createHttpError from 'http-errors'
+import { CredentialService } from '../services/CredentialService'
 
 export class AuthController {
   userService: UserService
   logger: Logger
   tokenService: TokenService
+  credentialService: CredentialService
 
   constructor(
     userService: UserService,
     logger: Logger,
     tokenService: TokenService,
+    credentialService: CredentialService,
   ) {
     this.userService = userService
     this.logger = logger
     this.tokenService = tokenService
+    this.credentialService = credentialService
   }
 
   async register(req: UserRequestBody, res: Response, next: NextFunction) {
@@ -76,17 +80,18 @@ export class AuthController {
 
       const user = await this.userService.getUser(username)
 
-      console.log('1', user)
-
       if (!user) {
-        const error = createHttpError(404, `${username} user not found`)
+        const error = createHttpError(400, `email or password is wrong`)
         throw error
       }
 
-      const isValidPassword = await bcrypt.compare(password, user.password)
+      const isValidPassword = await this.credentialService.comparePassword(
+        password,
+        user.password,
+      )
 
       if (!isValidPassword) {
-        const error = createHttpError(404, `Invalid password`)
+        const error = createHttpError(400, `email or password is wrong`)
         throw error
       }
 
@@ -125,7 +130,9 @@ export class AuthController {
         httpOnly: true,
       })
 
-      res.status(200).json({})
+      this.logger.info('user created', { id: user.id })
+
+      res.status(200).json({ id: user.id })
     } catch (error) {
       next(error)
       return

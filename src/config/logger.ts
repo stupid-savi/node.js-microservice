@@ -12,34 +12,31 @@ const logger = winston.createLogger({
   defaultMeta: {
     serviceName: 'auth-service',
   },
+  format,
 
   transports: [
     new winston.transports.File({
       level: 'error',
       dirname: './logs',
       filename: 'error.log',
-      format,
       silent: ['test'].includes(CONFIG.NODE_ENV || ''),
     }),
     new winston.transports.File({
       level: 'info',
       dirname: './logs',
       filename: 'info.log',
-      format,
       silent: ['test'].includes(CONFIG.NODE_ENV || ''),
     }),
     new winston.transports.File({
       level: 'warn',
       dirname: './logs',
       filename: 'warn.log',
-      format,
       silent: ['test'].includes(CONFIG.NODE_ENV || ''),
     }),
     new winston.transports.File({
       level: 'debug',
       dirname: './logs',
       filename: 'debug.log',
-      format,
       silent: ['test'].includes(CONFIG.NODE_ENV || ''),
     }),
     new winston.transports.Console({

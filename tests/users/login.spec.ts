@@ -28,6 +28,28 @@ describe('POST /auth/login', () => {
   //Happy Path
 
   describe('Given all fields', () => {
+    it('should return status code 200 for successful login', async () => {
+      const userPayload = {
+        username: 'savi2@yopmail.com',
+        password: 'Test@988989',
+      }
+
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: 'savi2@yopmail.com',
+        password: 'Test@988989',
+      }
+
+      await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+
+      const response = await request(app).post('/auth/login').send(userPayload)
+
+      expect(response.statusCode).toBe(200)
+    })
+
     it('should return access token and refresh token in cookies', async () => {
       // Arrange
       const userPayload = {
@@ -111,9 +133,128 @@ describe('POST /auth/login', () => {
 
       expect(refreshTokens).toHaveLength(1)
     })
+
+    it('should return a valid json', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'Test@9767$%13456',
+      }
+
+      await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+      // Act -  Trigger the actual logic like call the api endpoint
+
+      const userPayload = {
+        username: '1@gmail.com',
+        password: 'Test@9767$%13456',
+      }
+
+      const response = await request(app).post('/auth/login').send(userPayload)
+
+      expect(response.headers['content-type']).toEqual(
+        expect.stringContaining('json'),
+      )
+    })
+
+    it('should return a user id of logged in user', async () => {
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'Test@9767$%13456',
+      }
+
+      await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+
+      const userPayload = {
+        username: '1@gmail.com',
+        password: 'Test@9767$%13456',
+      }
+
+      const response = await request(app).post('/auth/login').send(userPayload)
+
+      const userRepository = connection.getRepository(User)
+      const email = userPayload.username
+
+      const findUser = await userRepository
+        .createQueryBuilder('user')
+        .where('user.email = :email', { email })
+        .getMany()
+
+      expect(findUser.length).toBe(1)
+      expect(findUser[0].id).toEqual(response.body.id)
+    })
   })
 
-  describe('Fields are missing', () => {})
+  describe('Fields are missing', () => {
+    it('should status code 404 for invalid email', async () => {
+      const userPayload = {
+        username: 'savi02@yopmail.com',
+        password: 'Test@988989',
+      }
+
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: 'savi2@yopmail.com',
+        password: 'Test@988989',
+      }
+
+      await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+
+      const response = await request(app).post('/auth/login').send(userPayload)
+
+      expect(response.statusCode).toBe(400)
+    })
+
+    it('should status code 404 for invalid password', async () => {
+      const userPayload = {
+        username: 'savi2@yopmail.com',
+        password: 'Test@98809089',
+      }
+
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: 'savi2@yopmail.com',
+        password: 'Test@988989',
+      }
+
+      await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+
+      const response = await request(app).post('/auth/login').send(userPayload)
+
+      expect(response.statusCode).toBe(400)
+    })
+
+    it('should status code 404 for invalid payload', async () => {
+      const userPayload = {}
+
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: 'savi2@yopmail.com',
+        password: 'Test@988989',
+      }
+
+      await request(app as any)
+        .post('/auth/register')
+        .send(userData)
+
+      const response = await request(app).post('/auth/login').send(userPayload)
+
+      expect(response.statusCode).toBe(400)
+    })
+  })
 
   //Sad Path
 })

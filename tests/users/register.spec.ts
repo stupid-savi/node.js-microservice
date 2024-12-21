@@ -283,7 +283,7 @@ describe('POST auth/register', () => {
   })
 
   describe('Fields are not in proper format', () => {
-    it('Should trime email field', async () => {
+    it('Should trim email field', async () => {
       const userData = {
         firstname: 'Savi',
         lastname: 'Singh',
