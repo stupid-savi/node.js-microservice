@@ -1,37 +1,40 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:latest
-    container_name: authpg-container
+    container_name: postgres
     environment:
-      - POSTGRES_USER=${DB_USERNAME}
+        - POSTGRES_USER=${DB_USERNAME}
         - POSTGRES_PASSWORD=${DB_PASSWORD}
         - POSTGRES_DB=${DB_NAME}
     volumes:
       - authpgdata:/var/lib/postgresql/data
     ports:
       - '5432:5432'
-    restart: unless-stopped
+    networks:
+      - auth_service_network 
 
   auth-service:
     build:
       context: .
-      dockerfile: docker/dev/Dockerfile
+      dockerfile: docker/dev/Dockerfile.dev
     container_name: auth-service
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./src:/usr/src/app/src
     ports:
       - '8085:8085'
-    environment:
-      - NODE_ENV=development
     env_file:
       - .env.dev
     depends_on:
       - postgres
-    restart: unless-stopped
+    networks:
+      - auth_service_network
 
 volumes:
   authpgdata:
     name: authpgdata
+
+networks:
+  auth_service_network:
+    name : auth_service_network
+    driver : bridge 
+  
