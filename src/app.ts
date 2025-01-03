@@ -30,7 +30,7 @@ app.get('/', (_, res) => {
     const err = createHttpError(401, 'You are not authorised to access this')
     throw err
   }
-  res.status(200).json({ msg: 'Welcome to Pizza App' })
+  res.status(200).json({ msg: 'Welcome to Pizza App v2' })
   return
 })
 

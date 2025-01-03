@@ -1,4 +1,4 @@
-import { NextFunction, Response } from 'express'
+import { NextFunction, Response, Request } from 'express'
 import { UserLoginRequestBody, UserRequestBody } from '../types'
 import { UserService } from '../services/UserService'
 import { Logger } from 'winston'
@@ -135,6 +135,16 @@ export class AuthController {
       res.status(200).json({ id: user.id })
     } catch (error) {
       next(error)
+      return
+    }
+  }
+
+  self(req: Request, res: Response, next: NextFunction) {
+    try {
+      res.json({})
+      return
+    } catch (err) {
+      next(err)
       return
     }
   }
