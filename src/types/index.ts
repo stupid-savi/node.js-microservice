@@ -18,3 +18,14 @@ export interface UserRequestBody extends Request {
 export interface UserLoginRequestBody extends Request {
   body: UserLoginPayload
 }
+
+export interface RequestAuth extends Request {
+  auth: {
+    sub: string
+    role: string
+  }
+}
+export type AuthCookie = {
+  accessToken: string
+  refreshToken: string
+}

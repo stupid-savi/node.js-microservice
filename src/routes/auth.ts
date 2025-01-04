@@ -1,4 +1,9 @@
-import express, { NextFunction, Request, Response } from 'express'
+import express, {
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+} from 'express'
 import { AuthController } from '../controllers/AuthController'
 import { UserService } from '../services/UserService'
 import { AppDataSource } from '../config/data-source'
@@ -9,6 +14,8 @@ import { TokenService } from '../services/TokenService'
 import { RefreshToken } from '../entity/RefreshToken'
 import userLoginSchema from '../validation/login'
 import { CredentialService } from '../services/CredentialService'
+import { RequestAuth } from '../types'
+import authenticate from '../middlewares/authenticate'
 
 // Note:-  Inversify.js can automate below process
 const authRouter = express.Router()
@@ -42,8 +49,12 @@ authRouter.post(
   },
 )
 
-authRouter.get('/self', (req: Request, res: Response, next: NextFunction) => {
-  authController.self(req, res, next)
-})
+authRouter.get(
+  '/self',
+  authenticate as RequestHandler,
+  async (req: Request, res: Response, next: NextFunction) => {
+    await authController.self(req as RequestAuth, res, next)
+  },
+)
 
 export default authRouter

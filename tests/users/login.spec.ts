@@ -90,8 +90,6 @@ describe('POST /auth/login', () => {
         }
       })
 
-      console.log(accessToken, refreshToken)
-
       expect(accessToken).not.toBeNull()
       expect(accessToken).not.toBeNull()
 

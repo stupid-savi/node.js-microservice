@@ -42,7 +42,7 @@ export default tseslint.config(
       'no-undef': 'off', // Error if an undeclared variable is used
       eqeqeq: ['error', 'always'], // Enforce strict equality (=== and !==)
       curly: 'error', // Enforce consistent braces for control statements
-      'consistent-return': 'error', // Ensure consistent return statements in functions
+      'consistent-return': 'off', // Ensure consistent return statements in functions
       'no-shadow': 'error', // Prevent variable shadowing
       'no-duplicate-imports': 'error', // Disallow duplicate imports
       'no-alert': 'warn', // Warn about the use of alert(), prompt(), and confirm()

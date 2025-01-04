@@ -41,7 +41,7 @@ const logger = winston.createLogger({
     }),
     new winston.transports.Console({
       level: 'info',
-      silent: CONFIG.NODE_ENV === 'production',
+      silent: ['test', 'prod'].includes(CONFIG.NODE_ENV || ''),
     }),
   ],
 })
