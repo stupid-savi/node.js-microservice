@@ -3,15 +3,15 @@ services:
     image: postgres:latest
     container_name: postgres
     environment:
-        - POSTGRES_USER=${DB_USERNAME}
-        - POSTGRES_PASSWORD=${DB_PASSWORD}
-        - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     volumes:
       - authpgdataprod:/var/lib/postgresql/data
     ports:
       - '5432:5432'
     networks:
-      - auth_service_prod_network 
+      - auth_service_prod_network
 
   auth-service-prod:
     build:
@@ -35,6 +35,5 @@ volumes:
 
 networks:
   auth_service_prod_network:
-    name : auth_service_prod_network
-    driver : bridge 
-  
+    name: auth_service_prod_network
+    driver: bridge

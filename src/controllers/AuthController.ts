@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express'
-import { UserLoginRequestBody, UserRequestBody } from '../types'
+import { RequestAuth, UserLoginRequestBody, UserRequestBody } from '../types'
 import { UserService } from '../services/UserService'
 import { Logger } from 'winston'
 import bcrypt from 'bcrypt'
@@ -76,7 +76,6 @@ export class AuthController {
         res.status(400).json({ errors: result.array() })
         return
       }
-      console.log(username, 123)
 
       const user = await this.userService.getUser(username)
 
@@ -113,9 +112,6 @@ export class AuthController {
         refreshTokenExpiresAt,
       )
 
-      console.log(accessToken)
-      console.log(refreshToken)
-
       res.cookie('accessToken', accessToken, {
         domain: 'localhost',
         maxAge: 1000 * 60 * 60, // 1 hour
@@ -139,9 +135,15 @@ export class AuthController {
     }
   }
 
-  self(req: Request, res: Response, next: NextFunction) {
+  async self(req: RequestAuth, res: Response, next: NextFunction) {
     try {
-      res.json({})
+      const user = await this.userService.getUserById(req.auth.sub)
+      console.log(user)
+      if (!user) {
+        const error = createHttpError(404, `user not found`)
+        throw error
+      }
+      res.json({ id: user.id })
       return
     } catch (err) {
       next(err)

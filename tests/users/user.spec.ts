@@ -7,6 +7,7 @@ import { isJwt } from '../utils/index'
 import { RefreshToken } from '../../src/entity/RefreshToken'
 import createJWKSMock from 'mock-jwks'
 import { USER_ROLES } from '../../src/constants'
+import { CONFIG } from '../../src/config'
 
 interface Headers {
   ['set-cookie']: string[]
@@ -16,7 +17,7 @@ describe('GET /auth/self', () => {
   let connection: DataSource
   let jwks: ReturnType<typeof createJWKSMock>
   beforeAll(async () => {
-    jwks = createJWKSMock('http://localhost:5600')
+    jwks = createJWKSMock('http://localhost:5501')
     connection = await AppDataSource.initialize()
   })
 
@@ -38,7 +39,24 @@ describe('GET /auth/self', () => {
 
   describe('Given all fields', () => {
     it('should return 200 status code', async () => {
-      const response = await request(app).get('/auth/self').send()
+      const userData = {
+        firstname: 'Savi',
+        lastname: 'Singh',
+        email: '1@gmail.com',
+        password: 'Test@9767$%13456',
+      }
+
+      const userRepository = connection.getRepository(User)
+      const data = await userRepository.save({
+        ...userData,
+        role: USER_ROLES.CUSTOMER,
+      })
+      const accessToken = jwks.token({ sub: data.id, role: data.role })
+      const response = await request(app)
+        .get('/auth/self')
+        .set('Cookie', [`accessToken=${accessToken};`])
+        .send()
+
       expect(response.statusCode).toBe(200)
     })
 
