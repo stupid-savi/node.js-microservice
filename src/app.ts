@@ -5,9 +5,8 @@ import createHttpError, { HttpError } from 'http-errors'
 import logger from './config/logger'
 import authRouter from './routes/auth'
 import 'reflect-metadata'
-
 const app = express()
-
+app.use(express.static('public'))
 app.use(express.json())
 app.use(cookieParser())
 
@@ -31,7 +30,7 @@ app.get('/', (_, res) => {
     const err = createHttpError(401, 'You are not authorised to access this')
     throw err
   }
-  res.status(200).json({ msg: 'Welcome to Pizza App v2' })
+  res.status(200).json({ msg: 'Welcome to Pizza App v3' })
   return
 })
 
@@ -52,8 +51,9 @@ app.get('/long-response', async (req, res, next) => {
 // Global error handling middleware for all erros like 500, 400, 401
 
 app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
+  console.log(error)
   const requestPath = req.path
-  const statusCode = error.statusCode || 500
+  const statusCode = error.statusCode || error?.status || 500
   logger.error(error.message, {
     statusCode,
     path: requestPath,
