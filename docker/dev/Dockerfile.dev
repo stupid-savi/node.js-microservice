@@ -12,6 +12,10 @@ RUN pnpm install
 
 COPY src src
 
+COPY public public
+
+COPY certs certs
+
 COPY tsconfig.json tsconfig.json
 
 EXPOSE 8085

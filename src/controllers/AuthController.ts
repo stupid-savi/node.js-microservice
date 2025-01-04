@@ -6,8 +6,6 @@ import bcrypt from 'bcrypt'
 import { validationResult } from 'express-validator'
 import { JwtPayload, sign } from 'jsonwebtoken'
 import { TokenService } from '../services/TokenService'
-import { AppDataSource } from '../config/data-source'
-import { User } from '../entity/User'
 import createHttpError from 'http-errors'
 import { CredentialService } from '../services/CredentialService'
 
@@ -96,7 +94,7 @@ export class AuthController {
 
       // Check if user exists and password matches :- TODO
       const payload: JwtPayload = {
-        sub: username,
+        sub: user.id,
         role: 'customer',
       }
 
@@ -137,13 +135,13 @@ export class AuthController {
 
   async self(req: RequestAuth, res: Response, next: NextFunction) {
     try {
+      console.log('self started')
       const user = await this.userService.getUserById(req.auth.sub)
-      console.log(user)
       if (!user) {
         const error = createHttpError(404, `user not found`)
         throw error
       }
-      res.json({ id: user.id })
+      res.json({ ...user, password: undefined })
       return
     } catch (err) {
       next(err)

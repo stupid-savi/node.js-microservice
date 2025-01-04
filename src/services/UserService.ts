@@ -42,10 +42,15 @@ export class UserService {
   }
 
   async getUserById(id: string) {
-    const user = await this.userRepository.findOne({
-      where: { id },
-    })
-
-    return user
+    // eslint-disable-next-line no-useless-catch
+    try {
+      console.log('----------------', id)
+      const user = await this.userRepository.findOne({
+        where: { id },
+      })
+      return user
+    } catch (error) {
+      throw error
+    }
   }
 }
