@@ -23,9 +23,17 @@ export interface RequestAuth extends Request {
   auth: {
     sub: string
     role: string
+    id: string
+    jti: string
   }
 }
 export type AuthCookie = {
   accessToken: string
   refreshToken: string
+}
+
+export type RefreshTokenType = {
+  sub: string
+  id: string
+  jti: string
 }

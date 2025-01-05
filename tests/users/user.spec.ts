@@ -3,11 +3,8 @@ import { AppDataSource } from '../../src/config/data-source'
 import { User } from '../../src/entity/User'
 import request from 'supertest'
 import app from '../../src/app'
-import { isJwt } from '../utils/index'
-import { RefreshToken } from '../../src/entity/RefreshToken'
 import createJWKSMock from 'mock-jwks'
 import { USER_ROLES } from '../../src/constants'
-import { CONFIG } from '../../src/config'
 
 interface Headers {
   ['set-cookie']: string[]
