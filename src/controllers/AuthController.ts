@@ -203,4 +203,17 @@ export class AuthController {
       return
     }
   }
+
+  async logout(req: RequestAuth, res: Response, next: NextFunction) {
+    try {
+      const refreshTokenId = req.auth.id
+      await this.tokenService.deleteRefreshToken(refreshTokenId)
+      res.clearCookie('accessToken')
+      res.clearCookie('refreshToken')
+      res.status(204).json({})
+    } catch (error) {
+      next(error)
+      return
+    }
+  }
 }

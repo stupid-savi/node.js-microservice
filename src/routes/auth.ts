@@ -17,6 +17,7 @@ import { CredentialService } from '../services/CredentialService'
 import { RequestAuth } from '../types'
 import authenticate from '../middlewares/authenticate'
 import validateRefresh from '../middlewares/validateRefresh'
+import parsedRefreshToken from '../middlewares/parsedRefreshToken'
 
 // Note:-  Inversify.js can automate below process
 const authRouter = express.Router()
@@ -63,6 +64,15 @@ authRouter.post(
   validateRefresh as RequestHandler,
   async (req: Request, res: Response, next: NextFunction) => {
     await authController.refresh(req as RequestAuth, res, next)
+  },
+)
+
+authRouter.post(
+  '/logout',
+  authenticate as RequestHandler,
+  parsedRefreshToken,
+  async (req: Request, res: Response, next: NextFunction) => {
+    await authController.logout(req as RequestAuth, res, next)
   },
 )
 
