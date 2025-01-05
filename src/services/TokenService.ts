@@ -33,12 +33,17 @@ export class TokenService {
       user,
       refreshTokenExpiresAt,
     )
-    const refreshToken = sign(payload, CONFIG.REFRESH_TOKEN_SECRET as string, {
-      algorithm: 'HS256',
-      expiresIn: '30d',
-      issuer: 'auth-service',
-      jwtid: String(refreshTokenSaved.id),
-    })
+    const refreshToken = sign(
+      { ...payload, id: String(refreshTokenSaved.id) },
+      CONFIG.REFRESH_TOKEN_SECRET as string,
+      {
+        algorithm: 'HS256',
+        expiresIn: '30d',
+        issuer: 'auth-service',
+
+        jwtid: String(refreshTokenSaved.id),
+      },
+    )
 
     return refreshToken
   }
@@ -63,5 +68,10 @@ export class TokenService {
       const error = createHttpError(500, 'Error reading private key')
       throw error
     }
+  }
+
+  async deleteRefreshToken(refreshTokenId: string) {
+    console.log('deleting refresh token ', refreshTokenId)
+    return await this.refreshTokenRepository.delete({ id: refreshTokenId })
   }
 }

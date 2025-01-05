@@ -16,6 +16,7 @@ import userLoginSchema from '../validation/login'
 import { CredentialService } from '../services/CredentialService'
 import { RequestAuth } from '../types'
 import authenticate from '../middlewares/authenticate'
+import validateRefresh from '../middlewares/validateRefresh'
 
 // Note:-  Inversify.js can automate below process
 const authRouter = express.Router()
@@ -54,6 +55,14 @@ authRouter.get(
   authenticate as RequestHandler,
   async (req: Request, res: Response, next: NextFunction) => {
     await authController.self(req as RequestAuth, res, next)
+  },
+)
+
+authRouter.post(
+  '/refresh',
+  validateRefresh as RequestHandler,
+  async (req: Request, res: Response, next: NextFunction) => {
+    await authController.refresh(req as RequestAuth, res, next)
   },
 )
 

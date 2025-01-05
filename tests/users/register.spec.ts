@@ -3,8 +3,6 @@ import app from '../../src/app'
 import { User } from '../../src/entity/User'
 import { AppDataSource } from '../../src/config/data-source'
 import { DataSource } from 'typeorm'
-import { truncateTables } from '../utils'
-import { response } from 'express'
 import { USER_ROLES } from '../../src/constants'
 
 describe('POST auth/register', () => {

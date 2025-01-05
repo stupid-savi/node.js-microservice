@@ -148,4 +148,59 @@ export class AuthController {
       return
     }
   }
+
+  async refresh(req: RequestAuth, res: Response, next: NextFunction) {
+    try {
+      const payload: JwtPayload = {
+        sub: req.auth.sub,
+        role: req.auth.role,
+      }
+
+      const user = await this.userService.getUserById(req.auth.sub)
+
+      if (!user) {
+        const error = createHttpError(
+          400,
+          `Error finding the user with refresh token`,
+        )
+        this.logger.error('Error finding the user with refresh token', {
+          userId: req.auth.sub,
+        })
+        throw error
+      }
+
+      await this.tokenService.deleteRefreshToken(req.auth.id)
+      const accessToken = await this.tokenService.generateAccessToken(payload)
+      this.logger.info('Generating new access token', { userId: req.auth.sub })
+      const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30
+      const refreshTokenExpiresAt = new Date(Date.now() + MS_IN_MONTH)
+      const newRefreshToken = await this.tokenService.generateRefreshToken(
+        payload,
+        user,
+        refreshTokenExpiresAt,
+      )
+      this.logger.info('Generating new refresh token', { userId: req.auth.sub })
+
+      res.cookie('accessToken', accessToken, {
+        domain: 'localhost',
+        maxAge: 1000 * 60 * 60, // 1 hour
+        sameSite: 'strict',
+        httpOnly: true,
+      })
+
+      res.cookie('refreshToken', newRefreshToken, {
+        domain: 'localhost',
+        maxAge: 1000 * 60 * 60 * 24 * 30, // 1 month
+        sameSite: 'strict',
+        httpOnly: true,
+      })
+
+      this.logger.info('Token genreated', { id: user.id })
+
+      res.status(200).json({ id: user.id })
+    } catch (error) {
+      next(error)
+      return
+    }
+  }
 }
