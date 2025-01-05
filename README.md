@@ -33,3 +33,11 @@ Note:- In case of testing i.e jest it automatically set the NODE_ENV = test so n
 
 **JWT Token Based Authentication** :-
 ![alt text](assets/jwt-token-based-auth.png)
+
+### Generate migration `pnpm run migration:generate src/migration/migration -d src/config/data-source.ts` or in some systems `npm run migration:generate -- src/migration/migration -d src/config/data-source.ts`
+
+### Run the migration `pnpm run migration:run -d src/config/data-source.ts` or `npm run -- migration:run -d src/config/data-source.ts`
+
+### Run the revert migration `pnpm run migration:revert -d src/config/data-source.ts` or `pnpm run migration:revert -- -d src/config/data-source.ts`
+
+### Create a migration
