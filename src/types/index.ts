@@ -37,3 +37,8 @@ export type RefreshTokenType = {
   id: string
   jti: string
 }
+
+export type TenantRequestPayload = {
+  name: string
+  address: string
+}
