@@ -1,9 +1,22 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
+import { TenantController } from '../controllers/TenantController'
+import logger from '../config/logger'
+import { TenantService } from '../services/TenantService'
+import { Tenant } from '../entity/Tenant'
+import { AppDataSource } from '../config/data-source'
+import tenantSchema from '../validation/tenant'
 
 const tenantRouter = express.Router()
+const tenantRepository = AppDataSource.getRepository(Tenant)
+const tenantService = new TenantService(tenantRepository)
+const tenantController = new TenantController(logger, tenantService)
 
-tenantRouter.post('/', (req, res) => {
-  res.status(201).json({})
-})
+tenantRouter.post(
+  '/',
+  tenantSchema,
+  async (req: Request, res: Response, next: NextFunction) => {
+    await tenantController.create(req, res, next)
+  },
+)
 
 export default tenantRouter
