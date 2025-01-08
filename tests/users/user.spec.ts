@@ -6,10 +6,6 @@ import app from '../../src/app'
 import createJWKSMock from 'mock-jwks'
 import { USER_ROLES } from '../../src/constants'
 
-interface Headers {
-  ['set-cookie']: string[]
-}
-
 describe('GET /auth/self', () => {
   let connection: DataSource
   let jwks: ReturnType<typeof createJWKSMock>
@@ -19,9 +15,9 @@ describe('GET /auth/self', () => {
   })
 
   beforeEach(async () => {
-    jwks.start()
     await connection.dropDatabase()
     await connection.synchronize()
+    jwks.start()
   })
 
   afterEach(() => {
