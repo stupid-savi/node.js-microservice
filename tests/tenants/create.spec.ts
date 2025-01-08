@@ -138,5 +138,22 @@ describe('POST /tenants', () => {
       expect(response.statusCode).toBe(401)
       expect(tenants.length).toBe(0)
     })
+
+    it('should return 403 is user is not admin user', async () => {
+      const tenantPayload = {
+        name: 'Lapinoz Pizza',
+        address: 'Ahemdabad',
+      }
+
+      const managerToken = jwks.token({ sub: '1', role: USER_ROLES.MANAGER })
+      const tenantRepository = connection.getRepository(Tenant)
+      const response = await request(app)
+        .post('/tenant')
+        .set('Cookie', `accessToken=${managerToken};`)
+        .send(tenantPayload)
+      const tenants = await tenantRepository.find()
+      expect(response.statusCode).toBe(403)
+      expect(tenants.length).toBe(0)
+    })
   })
 })
