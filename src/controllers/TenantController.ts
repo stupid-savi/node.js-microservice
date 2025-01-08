@@ -41,4 +41,26 @@ export class TenantController {
       next(error)
     }
   }
+
+  async getTenantList(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { page = 1, pageSize = 10, searchQuery = '' } = req.query || {}
+      const [tenants, total] = await this.tenantService.getTenants(
+        +page,
+        +pageSize,
+        searchQuery as string,
+      )
+      res
+        .status(200)
+        .json({
+          message: 'fetch tenant list successfully',
+          data: { tenants, total },
+        })
+      return
+    } catch (error) {
+      this.logger.error('Error getting tenant list', { data: req.query })
+      next(error)
+      return
+    }
+  }
 }
