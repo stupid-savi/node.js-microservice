@@ -6,6 +6,8 @@ import { Tenant } from '../entity/Tenant'
 import { AppDataSource } from '../config/data-source'
 import tenantSchema from '../validation/tenant'
 import authenticate from '../middlewares/authenticate'
+import { canAccess } from '../middlewares/canAccess'
+import { USER_ROLES } from '../constants'
 
 const tenantRouter = express.Router()
 const tenantRepository = AppDataSource.getRepository(Tenant)
@@ -16,6 +18,7 @@ tenantRouter.post(
   '/',
   tenantSchema,
   authenticate,
+  canAccess([USER_ROLES.ADMIN]),
   async (req: Request, res: Response, next: NextFunction) => {
     await tenantController.create(req, res, next)
   },
