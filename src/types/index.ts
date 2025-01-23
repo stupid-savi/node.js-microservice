@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { Tenant } from '../entity/Tenant'
 export interface UserBodyDataType {
   firstname: string
   lastname: string
@@ -46,4 +45,11 @@ export type TenantPayload = {
 
 export interface TenantRequest extends Request {
   body: TenantPayload
+}
+
+export interface TenantResponse extends Response {
+  message: string
+  name: string
+  address: string
+  id: string
 }
