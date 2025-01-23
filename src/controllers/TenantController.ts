@@ -46,9 +46,14 @@ export class TenantController {
   async getTenantList(req: Request, res: Response, next: NextFunction) {
     try {
       const { page = 1, pageSize = 10, searchQuery = '' } = req.query || {}
+
+      const _page = +page
+      const _pageSize = +pageSize
+      console.log(_page, _pageSize)
+      console.log(req.query)
       const [tenants, total] = await this.tenantService.getTenants(
-        +page,
-        +pageSize,
+        _page,
+        _pageSize,
         searchQuery as string,
       )
       res.status(200).json({
