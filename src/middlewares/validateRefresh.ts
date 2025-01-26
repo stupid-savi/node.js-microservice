@@ -24,10 +24,8 @@ export default expressjwt({
         },
       })
 
-      console.log('jwt token found', refreshTokenFound)
       return refreshTokenFound === null
     } catch (error) {
-      console.log('revoked')
       logger.error('Error while getting refresh token', {
         id: (token?.payload as RefreshTokenType)?.id,
         userid: token?.payload?.sub,

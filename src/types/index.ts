@@ -1,4 +1,5 @@
-import { Request, Response } from 'express'
+import { Request } from 'express'
+import { Response } from 'supertest'
 export interface UserBodyDataType {
   firstname: string
   lastname: string
@@ -47,9 +48,25 @@ export interface TenantRequest extends Request {
   body: TenantPayload
 }
 
-export interface TenantResponse extends Response {
+export interface TenantListRes {
   message: string
   name: string
   address: string
   id: string
+}
+
+export interface TenantListResponse extends Response {
+  body: {
+    data: {
+      tenants: TenantListRes[]
+    }
+  }
+}
+
+export interface TenantResponse extends Response {
+  body: {
+    data: {
+      id: string
+    }
+  }
 }
