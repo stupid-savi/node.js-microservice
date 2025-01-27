@@ -71,3 +71,20 @@ export interface TenantResponse extends Response {
     }
   }
 }
+
+export interface UserCreationResponse extends Response {
+  body: {
+    id: string
+  }
+}
+
+export interface userResponse extends Response {
+  body: {
+    id: string
+    firstname: string
+    lastname: string
+    email: string
+    password: string
+    role: string
+  }
+}

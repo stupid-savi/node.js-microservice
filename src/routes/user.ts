@@ -27,4 +27,13 @@ userRouter.post(
   },
 )
 
+userRouter.get(
+  '/:id',
+  authenticate,
+  canAccess([USER_ROLES.ADMIN, USER_ROLES.MANAGER]),
+  async (req: Request, res: Response, next: NextFunction) => {
+    await userController.findUser(req, res, next)
+  },
+)
+
 export default userRouter

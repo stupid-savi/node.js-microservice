@@ -59,4 +59,21 @@ export class UserService {
       throw error
     }
   }
+
+  async getUsers(page: number, pageSize: number, searchQuery: string) {
+    const queryBuilder = this.userRepository.createQueryBuilder('user')
+    if (searchQuery && searchQuery.trim() !== '') {
+      queryBuilder.where(
+        'user.firstname LIKE :searchQuery OR user.lastname LIKE :searchQuery',
+        {
+          searchQuery: `%${searchQuery}%`,
+        },
+      )
+    }
+    queryBuilder.skip((page - 1) * pageSize)
+    queryBuilder.take(pageSize)
+    const [users, total] = await queryBuilder.getManyAndCount()
+    const totalCount = Math.ceil(total / pageSize)
+    return [users, totalCount]
+  }
 }

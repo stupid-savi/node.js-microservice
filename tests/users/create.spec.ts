@@ -296,7 +296,6 @@ describe('POST /users', () => {
         lastname: ' Singh ',
         email: '1@gmail.com',
         password: 'Test@9767$%13456',
-        role: USER_ROLES.MANAGER,
       }
 
       await request(app)
@@ -315,7 +314,6 @@ describe('POST /users', () => {
         lastname: 'Singh',
         email: '1@gmail.com',
         password: 'Test@$6',
-        role: USER_ROLES.MANAGER,
       }
 
       const response = await request(app)
