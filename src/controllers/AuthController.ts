@@ -8,6 +8,7 @@ import { JwtPayload } from 'jsonwebtoken'
 import { TokenService } from '../services/TokenService'
 import createHttpError from 'http-errors'
 import { CredentialService } from '../services/CredentialService'
+import { USER_ROLES } from '../constants'
 
 export class AuthController {
   userService: UserService
@@ -53,6 +54,7 @@ export class AuthController {
         lastname,
         email,
         password: hashedPassword,
+        role: USER_ROLES.CUSTOMER,
       })
 
       this.logger.info('user created', { id: userId })

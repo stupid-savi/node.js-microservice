@@ -6,7 +6,13 @@ import { USER_ROLES } from '../constants'
 
 export class UserService {
   constructor(private userRepository: Repository<User>) {}
-  async create({ firstname, lastname, email, password }: UserBodyDataType) {
+  async create({
+    firstname,
+    lastname,
+    email,
+    password,
+    role,
+  }: UserBodyDataType) {
     try {
       const userExist = await this.userRepository.findOne({ where: { email } })
 
@@ -19,7 +25,7 @@ export class UserService {
         lastname,
         email,
         password,
-        role: USER_ROLES.CUSTOMER,
+        role,
       })
 
       return user.id

@@ -32,7 +32,6 @@ describe('POST /tenants', () => {
   })
 
   describe('Given all fields', () => {
-    console.log('jwks', jwks)
     it('should return status code 201 in response', async () => {
       const tenantPayload = {
         name: 'Lapinoz Pizza',
