@@ -18,12 +18,15 @@ import { RequestAuth } from '../types'
 import authenticate from '../middlewares/authenticate'
 import validateRefresh from '../middlewares/validateRefresh'
 import parsedRefreshToken from '../middlewares/parsedRefreshToken'
+import { Tenant } from '../entity/Tenant'
 
 // Note:-  Inversify.js can automate below process
 const authRouter = express.Router()
 const userRepository = AppDataSource.getRepository(User)
+const tenantRepository = AppDataSource.getRepository(Tenant)
+
 const refreshTokenRepository = AppDataSource.getRepository(RefreshToken)
-const userService = new UserService(userRepository)
+const userService = new UserService(userRepository, tenantRepository)
 const tokenService = new TokenService(refreshTokenRepository)
 const credentialService = new CredentialService()
 const authController = new AuthController(

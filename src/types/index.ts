@@ -1,11 +1,14 @@
 import { Request } from 'express'
 import { Response } from 'supertest'
+import { Tenant } from '../entity/Tenant'
 export interface UserBodyDataType {
   firstname: string
   lastname: string
   email: string
   password: string
   role: string
+  tenant?: Tenant
+  tenantId?: string
 }
 
 export interface UserLoginPayload {
@@ -56,6 +59,10 @@ export interface TenantListRes {
   id: string
 }
 
+export interface TenantCreationRes extends Response {
+  body: TenantListRes
+}
+
 export interface TenantListResponse extends Response {
   body: {
     data: {
@@ -86,5 +93,21 @@ export interface userResponse extends Response {
     email: string
     password: string
     role: string
+  }
+}
+
+export interface UserResponse {
+  id: string
+  firstname: string
+  lastname: string
+  email: string
+  role: string
+}
+
+export interface UserResponseList extends Response {
+  body: {
+    data: {
+      users: UserResponse[]
+    }
   }
 }

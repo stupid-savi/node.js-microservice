@@ -71,7 +71,6 @@ export class TokenService {
   }
 
   async deleteRefreshToken(refreshTokenId: string) {
-    console.log('deleting refresh token ', refreshTokenId)
     return await this.refreshTokenRepository.delete({ id: refreshTokenId })
   }
 }

@@ -49,8 +49,6 @@ export class TenantController {
 
       const _page = +page
       const _pageSize = +pageSize
-      console.log(_page, _pageSize)
-      console.log(req.query)
       const [tenants, total] = await this.tenantService.getTenants(
         _page,
         _pageSize,

@@ -6,11 +6,13 @@ import app from '../../src/app'
 import createJWKSMock from 'mock-jwks'
 import { USER_ROLES } from '../../src/constants'
 import { User } from '../../src/entity/User'
+import { TenantCreationRes, TenantResponse } from '../../src/types'
 
 describe('POST /users', () => {
   let connection: DataSource
   let jwks: ReturnType<typeof createJWKSMock>
   let adminAccessToken: string
+  let tenant: Tenant | null
 
   beforeAll(async () => {
     jwks = createJWKSMock('http://localhost:8085')
@@ -22,6 +24,17 @@ describe('POST /users', () => {
     await connection.synchronize()
     jwks.start()
     adminAccessToken = jwks.token({ sub: '1', role: USER_ROLES.ADMIN })
+    const tenantPayload = {
+      name: 'Lapinoz Pizza',
+      address: 'Ahemdabad',
+    }
+    const tenantRes = (await request(app)
+      .post('/tenant')
+      .set('Cookie', `accessToken=${adminAccessToken};`)
+      .send(tenantPayload)) as TenantCreationRes
+
+    const tenantRepo = connection.getRepository(Tenant)
+    tenant = await tenantRepo.findOne({ where: { id: tenantRes.body.id } })
   })
 
   afterEach(() => {
@@ -40,6 +53,7 @@ describe('POST /users', () => {
         email: '1@gmail.com',
         password: 'Test@9767$%13456',
         role: USER_ROLES.MANAGER,
+        tenant,
       }
       const response = await request(app)
         .post('/user')
@@ -55,6 +69,7 @@ describe('POST /users', () => {
         email: '1@gmail.com',
         password: 'Test@9767$%13456',
         role: USER_ROLES.MANAGER,
+        tenant,
       }
       await request(app)
         .post('/user')
@@ -74,6 +89,7 @@ describe('POST /users', () => {
         lastname: 'Singh',
         email: '1@gmail.com',
         password: 'Test@9767$%13456',
+        tenant,
       }
       await request(app)
         .post('/user')
@@ -91,6 +107,7 @@ describe('POST /users', () => {
         lastname: 'Singh',
         email: '1@gmail.com',
         password: 'Test@9767$%13456',
+        tenant,
       }
 
       await request(app)

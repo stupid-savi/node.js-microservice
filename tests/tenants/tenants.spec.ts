@@ -46,7 +46,6 @@ describe('POST /tenants', () => {
         .set('Cookie', `accessToken=${adminAccessToken}`)
         .send()
       expect(response.statusCode).toBe(200)
-      console.log(response.body)
       expect(response.body.data).toHaveProperty('tenants')
       expect(response.body.data.tenants).toHaveLength(1)
       expect(response.body.data.total).toBe(1)
@@ -87,8 +86,6 @@ describe('POST /tenants', () => {
         .get(`/tenant/${tenant.body.id}`)
         .set('Cookie', `accessToken=${adminAccessToken}`)
         .send()) as TenantResponse
-
-      console.log(response.body)
 
       expect(response.statusCode).toBe(200)
       expect(response.body.data.id).toEqual(tenant.body.id)

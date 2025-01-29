@@ -137,7 +137,6 @@ export class AuthController {
 
   async self(req: RequestAuth, res: Response, next: NextFunction) {
     try {
-      console.log('self started')
       const user = await this.userService.getUserById(req.auth.sub)
       if (!user) {
         const error = createHttpError(404, `user not found`)
