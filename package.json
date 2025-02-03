@@ -12,6 +12,7 @@
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint .",
     "test": "jest --watch --runInBand",
+    "test-coverage" : "jest --no-cache --coverage --all --runInBand",
     "migration:generate": "cross-env NODE_ENV=dev typeorm-ts-node-commonjs migration:generate",
     "migration:run": "cross-env NODE_ENV=dev typeorm-ts-node-commonjs migration:run",
     "migration:revert": "cross-env NODE_ENV=dev typeorm-ts-node-commonjs migration:revert",
