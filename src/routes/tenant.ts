@@ -18,7 +18,7 @@ tenantRouter.post(
   '/',
   tenantSchema,
   authenticate,
-  canAccess([USER_ROLES.ADMIN, USER_ROLES.CUSTOMER]),
+  canAccess([USER_ROLES.ADMIN]),
   async (req: Request, res: Response, next: NextFunction) => {
     await tenantController.create(req, res, next)
   },
@@ -27,7 +27,7 @@ tenantRouter.post(
 tenantRouter.get(
   '/tenant-list',
   authenticate,
-  canAccess([USER_ROLES.ADMIN, USER_ROLES.CUSTOMER]),
+  canAccess([USER_ROLES.ADMIN]),
   async (req: Request, res: Response, next: NextFunction) => {
     await tenantController.getTenantList(req, res, next)
   },
@@ -36,7 +36,7 @@ tenantRouter.get(
 tenantRouter.get(
   '/:id',
   authenticate,
-  canAccess([USER_ROLES.ADMIN, USER_ROLES.CUSTOMER]),
+  canAccess([USER_ROLES.ADMIN]),
   async (req: Request, res: Response, next: NextFunction) => {
     await tenantController.getTenant(req, res, next)
   },
@@ -45,7 +45,7 @@ tenantRouter.get(
 tenantRouter.delete(
   '/:id',
   authenticate,
-  canAccess([USER_ROLES.ADMIN, USER_ROLES.CUSTOMER]),
+  canAccess([USER_ROLES.ADMIN]),
   async (req: Request, res: Response, next: NextFunction) => {
     await tenantController.deleteTenant(req, res, next)
   },
@@ -55,7 +55,7 @@ tenantRouter.put(
   '/:id',
   tenantSchema,
   authenticate,
-  canAccess([USER_ROLES.ADMIN, USER_ROLES.CUSTOMER]),
+  canAccess([USER_ROLES.ADMIN]),
   async (req: Request, res: Response, next: NextFunction) => {
     await tenantController.updateTenant(req, res, next)
   },

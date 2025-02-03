@@ -31,7 +31,7 @@ userRouter.post(
 userRouter.get(
   '/users-list',
   authenticate,
-  canAccess([USER_ROLES.ADMIN, USER_ROLES.CUSTOMER]),
+  canAccess([USER_ROLES.ADMIN]),
   async (req: Request, res: Response, next: NextFunction) => {
     await userController.findUsers(req, res, next)
   },
@@ -49,7 +49,7 @@ userRouter.get(
 userRouter.delete(
   '/:id',
   authenticate,
-  canAccess([USER_ROLES.ADMIN, USER_ROLES.CUSTOMER]),
+  canAccess([USER_ROLES.ADMIN, USER_ROLES.MANAGER]),
   async (req: Request, res: Response, next: NextFunction) => {
     await userController.deleteUser(req, res, next)
   },
@@ -59,7 +59,7 @@ userRouter.put(
   '/:id',
   userUpadteSchema,
   authenticate,
-  canAccess([USER_ROLES.ADMIN, USER_ROLES.CUSTOMER]),
+  canAccess([USER_ROLES.ADMIN]),
   async (req: Request, res: Response, next: NextFunction) => {
     await userController.updateUser(req, res, next)
   },
