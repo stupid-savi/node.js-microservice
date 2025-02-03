@@ -41,3 +41,7 @@ Note:- In case of testing i.e jest it automatically set the NODE_ENV = test so n
 ### Run the revert migration `pnpm run migration:revert -d src/config/data-source.ts` or `pnpm run migration:revert -- -d src/config/data-source.ts`
 
 ### Create a migration
+
+**To hide password in USER entity we could have specified select : false in entity and wherever we need it in find query we could have user `findOne({select : ['password']})`**
+
+**Instead of passing the entity of tenant in manager creation, we could have done `tenant : tenantId ? {id : tenantId} : undefined`**
