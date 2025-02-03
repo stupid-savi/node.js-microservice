@@ -26,8 +26,6 @@ tenantRouter.post(
 
 tenantRouter.get(
   '/tenant-list',
-  authenticate,
-  canAccess([USER_ROLES.ADMIN]),
   async (req: Request, res: Response, next: NextFunction) => {
     await tenantController.getTenantList(req, res, next)
   },

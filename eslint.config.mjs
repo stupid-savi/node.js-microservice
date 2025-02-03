@@ -31,7 +31,9 @@ export default tseslint.config(
       'node-modules',
       'eslint.config.mjs',
       'jest.config.js',
-      'scripts'
+      'scripts',
+      "*.spec.ts",
+      "tests"
     ],
   },
 
