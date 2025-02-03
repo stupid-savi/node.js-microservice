@@ -45,3 +45,5 @@ Note:- In case of testing i.e jest it automatically set the NODE_ENV = test so n
 **To hide password in USER entity we could have specified select : false in entity and wherever we need it in find query we could have user `findOne({select : ['password']})`**
 
 **Instead of passing the entity of tenant in manager creation, we could have done `tenant : tenantId ? {id : tenantId} : undefined`**
+
+![alt text](assets/ci-cd.png)
