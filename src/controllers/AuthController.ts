@@ -100,7 +100,7 @@ export class AuthController {
         role: 'customer',
       }
 
-      const accessToken = await this.tokenService.generateAccessToken(payload)
+      const accessToken = this.tokenService.generateAccessToken(payload)
 
       // persist the refresh token
       const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30
@@ -171,7 +171,7 @@ export class AuthController {
       }
 
       await this.tokenService.deleteRefreshToken(req.auth.id)
-      const accessToken = await this.tokenService.generateAccessToken(payload)
+      const accessToken = this.tokenService.generateAccessToken(payload)
       this.logger.info('Generating new access token', { userId: req.auth.sub })
       const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30
       const refreshTokenExpiresAt = new Date(Date.now() + MS_IN_MONTH)

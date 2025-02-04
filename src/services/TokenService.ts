@@ -11,8 +11,8 @@ import { Repository } from 'typeorm'
 
 export class TokenService {
   constructor(private refreshTokenRepository: Repository<RefreshToken>) {}
-  async generateAccessToken(payload: JwtPayload) {
-    const privateKey = await this.getPrivateKey()
+  generateAccessToken(payload: JwtPayload) {
+    const privateKey = this.getPrivateKey()
 
     const accessToken = sign(payload, privateKey, {
       algorithm: 'RS256',
@@ -56,13 +56,15 @@ export class TokenService {
     return refreshTokenSaved
   }
 
-  async getPrivateKey() {
-    let privateKey: Buffer
+  getPrivateKey() {
+    let privateKey: string
 
     try {
-      privateKey = await fs.readFile(
-        path.join(__dirname, '../../certs/private.pem'),
-      )
+      if (!CONFIG.PRIVATE_KEY) {
+        const error = createHttpError(500, 'Private Key is not set')
+        throw error
+      }
+      privateKey = CONFIG.PRIVATE_KEY!
       return privateKey
     } catch (err) {
       const error = createHttpError(500, 'Error reading private key')
