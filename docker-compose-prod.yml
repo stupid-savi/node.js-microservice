@@ -16,10 +16,8 @@ services:
   auth-service-prod:
     build:
       context: .
-      dockerfile: docker/dev/Dockerfile.prod
+      dockerfile: docker/prod/Dockerfile
     container_name: auth-service
-    volumes:
-      - ./src:/usr/src/app/src
     ports:
       - '8085:8085'
     env_file:
