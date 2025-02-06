@@ -14,4 +14,6 @@ module.exports = {
     '!src/migration/**',
     '!src/types/**',
   ],
+  testTimeout: 3000000
 }
+

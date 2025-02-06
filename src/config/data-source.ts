@@ -11,6 +11,7 @@ export const AppDataSource = new DataSource({
   username: DB_USERNAME,
   password: DB_PASSWORD,
   database: DB_NAME,
+  ssl: CONFIG.NODE_ENV === 'test',
   // It must be false in production, Always keep it false
   synchronize: true,
   logging: false,
