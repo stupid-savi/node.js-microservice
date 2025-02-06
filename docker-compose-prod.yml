@@ -14,9 +14,7 @@ services:
       - auth_service_prod_network
 
   auth-service-prod:
-    build:
-      context: .
-      dockerfile: docker/prod/Dockerfile
+    image: stupidsavi/auth-service:v1
     container_name: auth-service
     ports:
       - '8085:8085'
