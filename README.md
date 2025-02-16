@@ -47,3 +47,5 @@ Note:- In case of testing i.e jest it automatically set the NODE_ENV = test so n
 **Instead of passing the entity of tenant in manager creation, we could have done `tenant : tenantId ? {id : tenantId} : undefined`**
 
 ![alt text](assets/ci-cd.png)
+
+### To avoid direct push in main branch, to protect main branch = Branch protection rules in github, also can add a github action job when success only merge.
