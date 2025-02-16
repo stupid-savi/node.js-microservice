@@ -52,7 +52,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
             IMAGE_NAME: stupidsavi/auth-service
-            IMAGE_TAG: build-${{github_run_number}}
+            IMAGE_TAG: build-${{github.run_number}}
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         steps:
             - name: Checkout Repository
