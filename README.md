@@ -48,4 +48,4 @@ Note:- In case of testing i.e jest it automatically set the NODE_ENV = test so n
 
 ![alt text](assets/ci-cd.png)
 
-### To avoid direct push in main branch, to protect main branch = Branch protection rules in github, also can add a github action job when success only merge.
+### To avoid direct push in main branch, to protect main branch = Branch protection rules in github, also can add a github action job when success only merge .
