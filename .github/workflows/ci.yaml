@@ -26,7 +26,7 @@ jobs:
       - name: Run Prettier
         run: npm run format:check
       - name: Test and coverage
-        run: npm run test
+        run: npm run test-coverage
         env:
           PORT: ${{secrets.PORT}}
           SHUTDOWN_WINDOW_TIMEFRAME: ${{secrets.SHUTDOWN_WINDOW_TIMEFRAME}}
