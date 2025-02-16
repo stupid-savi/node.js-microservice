@@ -17,4 +17,3 @@ Run docker compose and pass env file from as argument :- `docker compose --env-f
 Build specific docker file `docker build -t auth-service-prod:v1 -f docker/prod/Dockerfile .(context from where copy code)`
 
 Tag a docker image `docker tag local-image:tag dcker-hub-image:tag`
-
